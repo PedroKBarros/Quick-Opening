@@ -19,7 +19,7 @@ function showBody(){
         '</p>' +
         '</div>' +
           '<div class="col-md-12">' +
-            '<button type="button" id="btn-add-group" class="btn btn-outline-primary btn-lg mt-3 mb-5" style="width: 150px; height: 150px;">+ Add Group</button>' +
+            '<button type="button" id="btn-add-group" class="btn btn-outline-primary btn-lg mt-3 mb-5" style="width: 150px; height: 150px;" onclick="addGroup()">+ Add Group</button>' +
           '</div>' +
       '</div>'
             
@@ -27,5 +27,9 @@ function showBody(){
     
   }
   function isNewNavigator(){
-    return window.localStorage.getItem("qoUsers") == null
+    return window.localStorage.getItem("qoGroups") == null
+  }
+
+  function addGroup(){
+    window.location.href = "./add-group.html"
   }
