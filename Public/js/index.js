@@ -31,5 +31,7 @@ function showBody(){
   }
 
   function addGroup(){
-    window.location.href = "./add-group.html"
+     window.location.href = "./add-group.html"
+     
   }
+
