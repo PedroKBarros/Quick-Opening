@@ -2,6 +2,13 @@ const maxColumns = 12
 const maxGroups = 6
 const maxGroupsPerRow = 4
 
+const widthMd = 768
+const sizePerColumnMd = 3
+const widthSm = 576
+const sizePerColumnSm = 4
+const widthXs = 575
+const sizePerColumnXs = 6
+
 function showBody(){
     if(getTotalGroups() == 0){
       showInitialBody()
@@ -20,8 +27,8 @@ function showSecondBody(){
     '<div class="col-md-12">' +
           '<button type="button" class="btn btn-outline-primary btn-lg mt-3 mb-5" onclick="addGroup()">+ Add Group</button>' +
     '</div>' +
-    getGroupsShowHtml() +
-  '</div>'
+  '</div>' +
+    getGroupsShowHtml()
           
   mainContainer.innerHTML = htmlStr  
 }
@@ -30,28 +37,47 @@ function getGroupsShowHtml(){
   let htmlGroups = '<div class="row d-flex align-items-center text-center">'
   let groupName = ""
   let groups = getJSONGroups()
-  let sizePerColumn = maxColumns / maxGroupsPerRow
   let groupPerRowCount = 0
   for(let i = 0;i < groups.length;i++){
       groupName = groups[i].name
       htmlGroups = htmlGroups + 
-      '<div class="col-md-' + sizePerColumn + '">' +
-      '<button id=group-' + i + ' type="button" class="btn btn-outline-primary btn-lg mt-3 mb-5" style="width: 100px; height: 100px;">' + groupName + '</button>' +
+      '<div class="col-md-' + sizePerColumnMd + ' col-sm-' + sizePerColumnSm + ' col-xs-' + sizePerColumnXs + '">' +
+      '<button id=group-' + i + ' type="button" class="btn btn-outline-primary btn-lg mt-3" style="width: 100px; height: 100px;">' + groupName + '</button>' +
       '</div>'
       groupPerRowCount++
-      if(groupPerRowCount == maxGroupsPerRow){
+      console.log(getMaxGroupsPerRow())
+      if(groupPerRowCount == getMaxGroupsPerRow()){
         groupPerRowCount = 0
         htmlGroups += '</div>'
-        htmlGroups += '<div class="row d-flex align-items-center text-center">'
+        if(i < groups.length - 1){
+          htmlGroups += '<div class="row d-flex align-items-center text-center">'
+        }
       }
   }
 
   if(groupPerRowCount > 0){ //Significa que uma linha ficou com qtd de grupos menor do que sua capacidade
     htmlGroups += '</div>'
-    htmlGroups += '<div class="row d-flex align-items-center text-center">'
   }
   
   return htmlGroups
+}
+
+function getMaxGroupsPerRow(){
+  let screenWidth = getScreenSize().width
+
+  if (screenWidth >= widthMd)
+    return 12 / sizePerColumnMd
+  
+  if(screenWidth >= widthSm)
+    return 12 / sizePerColumnSm
+
+  return 12 / sizePerColumnXs
+}
+
+
+function getScreenSize(){
+  //Retorna o tamanho da janela e não da tela, pois o usuário, no desktop, pode alterar o tamanho da janela
+  return {"width": screen.width, "height": screen.height}
 }
 
   function showInitialBody(){
