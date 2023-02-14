@@ -1,7 +1,5 @@
 function loadGroupPage(){
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
-    const groupName = urlParams.get('group')
+    let groupName = getGroupNameByUrl()
     let mainContainer = document.getElementById("main-container")
     const groupUrls = getGroupUrls(groupName)
     mainContainer.innerHTML = ""
@@ -18,29 +16,96 @@ function loadGroupPage(){
     '</div>' +
     '<div class="row">' +
       '<div class="col-6 d-flex justify-content-right text-right">' +
-        '<input type="text" class="form-control" id="input-name" placeholder="https://www.facebook.com/">' +
+        '<input type="text" class="form-control" id="input-link" placeholder="https://www.facebook.com/">' +
       '</div>' +
       '<div class="col-6 d-flex justify-content-left text-left">' +
-        '<button type="button" class="btn btn-outline-primary">Add</button>' +
+        '<button type="button" class="btn btn-outline-primary" onClick="addLink()">Add</button>' +
       '</div>' +
     '</div>'
     if(groupUrls.length == 0){
         mainContainer.innerHTML = mainContainer.innerHTML +
         '<div id="links-container" class="containe shadow-sm mt-5 rounded-3 border border-1">' +
             '<div class="row d-flex align-items-left text-left">' +
-                '<h4 class="display-9 p-3"> LINKS' + '</h4>' +
-                '<h5 class="display-9 p-3 fw-normal"> This group has no links :(' + '</h4>' +
-            '</div>'
+                '<div class="col-12 d-flex justify-content-left text-left">' +
+                    '<h4 class="display-9 mx-3 mt-2"> LINKS </h4>' +
+                    '<button type="button" class="btn btn-outline-primary mx-3 mt-2">Open All</button>' +
+                '</div>' +
+            '</div>' +
+            '<div class="row d-flex align-items-left text-left">' +
+                '<h5 class="display-9 fw-normal mx-3 my-4"> This group has no links :( </h4>' +
+            '</div>' +
         '</div>'
     }else{
-        '<div id="links-container" class="containe shadow-sm mt-5 rounded-3 border border-1">' +
-            '<div class="row d-flex align-items-left text-left">' +
-                '<h4 class="display-9 p-3"> LINKS' + '</h4>' +
-                '<h5 class="display-9 p-3 fw-normal"> This group has links :)' + '</h4>' +
-            '</div>'
-        '</div>'
+      mainContainer.innerHTML = mainContainer.innerHTML +
+      '<div id="links-container" class="containe shadow-sm mt-5 rounded-3 border border-1">' +
+        '<div class="row d-flex align-items-left text-left">' +
+          '<div class="col-12 d-flex justify-content-left text-left mb-3">' +
+              '<h4 class="display-9 mx-3 mt-2"> LINKS </h4>' +
+              '<button type="button" class="btn btn-outline-primary mx-3 mt-2">Open All</button>' +
+            '</div>' +
+          '</div>' +
+            getLinksShowHtml(groupUrls) +
+      '</div>'
+
     }
  
+  }
+
+  function getLinksShowHtml(groupUrls){
+    let linksHtml = ""
+
+    linksHtml+= 
+      '<div class="row d-flex align-items-left text-left mx-4 my-4">' +
+          '<ul class=list-group>'
+    for(let i = 0;i < groupUrls.length;i++){
+      linksHtml+= 
+          '<li class="list-group-item">' +
+            '<input class="form-check-input me-1" type="checkbox" value="" aria-label="...">' +
+              '<a href="' + group.urls[i] + '" class="list-group-item list-group-item-action link-primary" target="_blank">' + groupUrls[i] + '</a>' +
+            '</li>'
+    }
+    linksHtml +=
+    '</ul>' +
+    '</div>'
+    console.log(linksHtml)
+    return linksHtml
+  }
+
+  function getGroupNameByUrl(){
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    return urlParams.get('group')
+  }
+
+  function addLink(){
+    let inputLink = document.getElementById('input-link')
+    if(inputLink.value == ""){
+      window.alert("No links have been released. Please enter the desired link and click the <Add> button to add it to the group.")
+      return false
+
+    }
+
+    if(!isValidUrl(inputLink.value)){
+      window.alert("The link is not valid. Check the provided link and try again.")
+      return false
+    }
+
+    let groupName = getGroupNameByUrl()
+    let groups = getJSONGroups()
+    let index = getIndexGroup(groupName)
+    groups[index].urls.push(inputLink.value)
+    window.localStorage.setItem("qoGroups", JSON.stringify(groups))
+    return true
+
+  }
+
+  function isValidUrl(urlString){
+    try {
+      let url = new URL(urlString)
+      return true
+    } catch(err) {
+        return false
+    }
   }
 
 function getTotalGroups(){
@@ -62,12 +127,21 @@ function getTotalGroups(){
   }
 
   function getGroupUrls(groupName){
+    group = getJSONGroups()[getIndexGroup(groupName)]
+
+    if (group == null)
+      return null
+
+    return group.urls
+  }
+
+  function getIndexGroup(groupName){
     groups = getJSONGroups()
 
     for(let i = 0;i < groups.length;i++){
         if(groups[i].name == groupName)
-            return groups[i].urls
+            return i
     }
 
-    return null
+    return -1
   }
