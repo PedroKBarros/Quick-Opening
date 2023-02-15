@@ -45,7 +45,7 @@ function loadGroupPage(){
           '<div class="col-12 d-flex justify-content-left text-left mb-3">' +
               '<h4 class="display-9 mx-3 mt-2"> LINKS </h4>' +
               '<button type="button" class="btn btn-outline-primary mx-3 mt-2" onClick="openAllLinks()">Open All</button>' +
-              '<button type="button" class="btn btn-outline-primary mt-2">Open Selected</button>' +
+              '<button type="button" class="btn btn-outline-primary mt-2" onClick="openSelectedLinks()">Open Selected</button>' +
             '</div>' +
           '</div>' +
             getLinksShowHtml(groupUrls) +
@@ -69,7 +69,7 @@ function loadGroupPage(){
         linkLabel = groupUrls[i].substring(0, maxLabelLink + 1) + "..."
 
       linksHtml+= 
-          '<li class="list-group-item">' +
+          '<li name="li-link-item" class="list-group-item">' +
             '<input class="form-check-input me-1" type="checkbox" value="" aria-label="...">' +
               '<a href="' + group.urls[i] + '" class="list-group-item list-group-item-action link-primary" target="_blank">' + linkLabel + '</a>' +
             '</li>'
@@ -77,8 +77,16 @@ function loadGroupPage(){
     linksHtml +=
     '</ul>' +
     '</div>'
-    console.log(linksHtml)
     return linksHtml
+  }
+
+  function openSelectedLinks(){
+    listGroupItems = document.getElementsByName("li-link-item")
+
+    for(let i = 0;i < listGroupItems.length;i++){
+      if(listGroupItems[i].children[0].checked)
+        window.open(listGroupItems[i].children[1].href, '_blank')
+    }
   }
 
   function getGroupNameByUrl(){
