@@ -7,6 +7,11 @@ function addGroup(){
     let mainContainer = document.getElementById("main-container")
     let groups = []
 
+    if(groupName.value == ""){
+        window.alert("Group name not specified.")
+        return false
+    }
+
     if(getTotalGroups() == 0){
         groups.push({"name": groupName.value.toUpperCase(), "urls": []})
         window.localStorage.setItem("qoGroups", JSON.stringify(groups))
