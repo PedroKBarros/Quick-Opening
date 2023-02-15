@@ -47,7 +47,12 @@ function loadGroupPage(){
               '<button type="button" class="btn btn-outline-primary mx-3 mt-2" onClick="openAllLinks()">Open All</button>' +
               '<button type="button" class="btn btn-outline-primary mt-2" onClick="openSelectedLinks()">Open Selected</button>' +
             '</div>' +
+        '<div class="row d-flex align-items-left text-left">' +
+          '<div class="col-12 d-flex justify-content-left text-left">' +
+            '<input id="select-all-checkbox" class="form-check-input me-1 mx-4" type="checkbox" value="" aria-label="..." onClick="selectAllCheckboxs()">' +
+            '<label for="general-checkbox" class="form-label mx-1">Select All</label>' +
           '</div>' +
+        '</div>' +
             getLinksShowHtml(groupUrls) +
       '</div>'
 
@@ -55,12 +60,20 @@ function loadGroupPage(){
  
   }
 
+  function selectAllCheckboxs(){
+    listGroupItems = document.getElementsByName("li-link-item")
+    checkBoxSelectAll = document.getElementById("select-all-checkbox")
+
+    for(let i = 0;i < listGroupItems.length;i++)
+      listGroupItems[i].children[0].checked = checkBoxSelectAll.checked
+  }
+
   function getLinksShowHtml(groupUrls){
     let linksHtml = ""
     let linkLabel = ""
 
     linksHtml+= 
-      '<div class="row d-flex align-items-left text-left mx-4 my-4">' +
+      '<div class="row d-flex align-items-left text-left mx-4 my-1">' +
           '<ul class=list-group>'
     for(let i = 0;i < groupUrls.length;i++){
       if (groupUrls[i].length <= maxLabelLink)
