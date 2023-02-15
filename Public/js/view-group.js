@@ -18,7 +18,7 @@ function loadGroupPage(){
     '</div>' +
     '<div class="row">' +
       '<div class="col-6 d-flex justify-content-right text-right">' +
-        '<input type="text" class="form-control" id="input-link" placeholder="https://www.facebook.com/">' +
+        '<input type="text" class="form-control" id="input-link" placeholder="https://www.facebook.com/" maxlength=500>' +
       '</div>' +
       '<div class="col-6 d-flex justify-content-left text-left">' +
         '<button type="button" class="btn btn-outline-primary" onClick="addLink()">Add</button>' +
@@ -89,6 +89,10 @@ function loadGroupPage(){
 
   function addLink(){
     let inputLink = document.getElementById('input-link')
+    let groupName = getGroupNameByUrl()
+    let groups = getJSONGroups()
+    let index = getIndexGroup(groupName)
+
     if(inputLink.value == ""){
       window.alert("No links have been released. Please enter the desired link and click the <Add> button to add it to the group.")
       return false
@@ -100,14 +104,25 @@ function loadGroupPage(){
       return false
     }
 
-    let groupName = getGroupNameByUrl()
-    let groups = getJSONGroups()
-    let index = getIndexGroup(groupName)
+    if(existsLink(groups[index], inputLink.value)){
+      window.alert("Link already exists.")
+      return false
+    }
+
     groups[index].urls.push(inputLink.value)
     window.localStorage.setItem("qoGroups", JSON.stringify(groups))
     window.location.reload()
     return true
 
+  }
+
+  function existsLink(group, link){
+    link = link.toUpperCase()
+    for(let i = 0;i < group.urls.length;i++){
+      if(group.urls[i].toUpperCase() == link)
+        return true
+    }
+    return false
   }
 
   function openAllLinks(){
