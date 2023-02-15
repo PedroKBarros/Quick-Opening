@@ -47,6 +47,7 @@ function loadGroupPage(){
               '<button type="button" class="btn btn-outline-primary mx-3 mt-2" onClick="openAllLinks()">Open All</button>' +
               '<button type="button" class="btn btn-outline-primary mt-2" onClick="openSelectedLinks()">Open Selected</button>' +
             '</div>' +
+        '</div>' + 
         '<div class="row d-flex align-items-left text-left">' +
           '<div class="col-12 d-flex justify-content-left text-left">' +
             '<input id="select-all-checkbox" class="form-check-input me-1 mx-4" type="checkbox" value="" aria-label="..." onClick="selectAllCheckboxs()">' +
