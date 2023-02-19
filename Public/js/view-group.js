@@ -30,8 +30,9 @@ function loadGroupPage(){
             '<div class="row d-flex align-items-left text-left">' +
                 '<div class="col-12 d-flex justify-content-left text-left">' +
                     '<h4 class="display-9 mx-3 mt-2"> LINKS </h4>' +
-                    '<button type="button" class="btn btn-outline-primary mx-3 mt-2" disabled>Open All</button>' +
-                    '<button type="button" class="btn btn-outline-primary mt-2" disabled>Open Selected</button>' +
+                    '<button type="button" class="btn btn-outline-success mx-3 mt-2" disabled>Open All</button>' +
+                    '<button type="button" class="btn btn-outline-success mt-2" disabled>Open Selected</button>' +
+                    '<button type="button" class="btn btn-outline-danger mx-3 mt-2" disabled>Remove Selected</button>' +
                 '</div>' +
             '</div>' +
             '<div class="row d-flex align-items-left text-left">' +
@@ -46,6 +47,7 @@ function loadGroupPage(){
               '<h4 class="display-9 mx-3 mt-2"> LINKS </h4>' +
               '<button type="button" class="btn btn-outline-primary mx-3 mt-2" onClick="openAllLinks()">Open All</button>' +
               '<button type="button" class="btn btn-outline-primary mt-2" onClick="openSelectedLinks()">Open Selected</button>' +
+              '<button type="button" class="btn btn-outline-danger mx-3 mt-2" onClick="removeSelectedLinks()">Remove Selected</button>' +
             '</div>' +
         '</div>' + 
         '<div class="row d-flex align-items-left text-left">' +
@@ -101,6 +103,44 @@ function loadGroupPage(){
       if(listGroupItems[i].children[0].checked)
         window.open(listGroupItems[i].children[1].href, '_blank')
     }
+  }
+
+  function removeSelectedLinks(){
+    let removeLinksCount = 0
+    let removeLinks = ""
+    let removeLinksIndex = []
+    let link
+    listGroupItems = document.getElementsByName("li-link-item")
+
+    for(let i = 0;i < listGroupItems.length;i++){
+      if(listGroupItems[i].children[0].checked){
+        link = listGroupItems[i].children[1].href
+        removeLinks += "-" + link + '\n'
+        removeLinksIndex.push(i)
+        removeLinksCount++
+      }
+    }
+
+    if (removeLinksCount == 0)
+      return false
+
+    if(window.confirm("The following " + removeLinksCount + " links will be permanently removed. Do you wish to continue?\n\n" + removeLinks)){
+      removeLinksJSON(removeLinksIndex)
+    }
+  }
+  
+  function removeLinksJSON(linksIndex){
+    let groupName = getGroupNameByUrl()
+    let groups = getJSONGroups()
+    let index = getIndexGroup(groupName)
+
+    for(let i = 0; i < linksIndex.length;i++){
+      groups[index].urls.splice(linksIndex[i])
+    }
+    console.log(groups[index].urls)
+    window.localStorage.setItem("qoGroups", JSON.stringify(groups))
+    window.location.reload()
+    return true
   }
 
   function getGroupNameByUrl(){
