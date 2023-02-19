@@ -42,9 +42,10 @@ function getGroupsShowHtml(){
       groupName = groups[i].name
       htmlGroups = htmlGroups + 
       '<div class="col-md-' + sizePerColumnMd + ' col-sm-' + sizePerColumnSm + ' col-xs-' + sizePerColumnXs + '">' +
-        '<button id=group-' + i + ' type="button" class="position-relative btn btn-outline-primary btn-lg mt-3 shadow rounded-3 border border-4 border-primary text-truncate" data-bs-toggle="tooltip" data-bs-placement="top" title="' + groupName + '" style="width: 160px; height: 200px; font-size: 15px;" onClick="redirectGroupUrl(this)">' + 
-          groupName + 
+        '<button id=group-' + i + ' type="button" class="btn btn-outline-primary btn-lg mt-3 shadow rounded-3 border border-4 border-primary text-truncate" data-bs-toggle="tooltip" data-bs-placement="top" title="' + groupName + '" style="width: 160px; height: 200px; font-size: 15px;" onClick="redirectGroupUrl(this)">' + 
+          groupName +
         '</button>' +
+        '<button id="' + groupName + '" type="button" class="btn-close position-static top-50 start-100" aria-label="Close" onClick="removeGroup(this)"></button>' + 
       '</div>'
       groupPerRowCount++
       console.log(getMaxGroupsPerRow())
@@ -62,6 +63,32 @@ function getGroupsShowHtml(){
   }
   
   return htmlGroups
+}
+
+function removeGroup(groupHTMLButton){
+  let groups = getJSONGroups()
+
+  if(window.confirm("Group " + groupHTMLButton.id + " will be permanently removed. Do you wish to continue?")){
+    removeGroupJSON(groups, groupHTMLButton.id)
+  }
+}
+
+function removeGroupJSON(groups, groupName){
+  if(groups == null || groupName == null)
+    return false
+  
+  if(groupName == "")
+    return false
+
+  for(let i = 0;i<groups.length;i++){
+    if(groups[i].name == groupName){
+      groups.splice(i, 1)
+      break
+    }
+  }
+  window.localStorage.setItem("qoGroups", JSON.stringify(groups))
+  window.location.reload()
+  return true
 }
 
 function redirectGroupUrl(groupButton){
