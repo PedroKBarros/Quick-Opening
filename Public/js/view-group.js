@@ -128,8 +128,9 @@ function loadGroupPage(){
     let groups = getJSONGroups()
     let index = getIndexGroup(groupName)
 
+    console.log(linksIndex)
     for(let i = 0; i < linksIndex.length;i++){
-      groups[index].urls.splice(linksIndex[i])
+      groups[index].urls.splice(linksIndex[i], linksIndex.length)
     }
     console.log(groups[index].urls)
     window.localStorage.setItem("qoGroups", JSON.stringify(groups))
