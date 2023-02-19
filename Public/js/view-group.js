@@ -1,5 +1,3 @@
-const maxLabelLink = 40
-
 function loadGroupPage(){
     let groupName = getGroupNameByUrl()
     let mainContainer = document.getElementById("main-container")
@@ -79,15 +77,11 @@ function loadGroupPage(){
       '<div class="row d-flex align-items-left text-left mx-4 my-1">' +
           '<ul class=list-group>'
     for(let i = 0;i < groupUrls.length;i++){
-      if (groupUrls[i].length <= maxLabelLink)
-        linkLabel = groupUrls[i]
-      else
-        linkLabel = groupUrls[i].substring(0, maxLabelLink + 1) + "..."
-
+      linkLabel = groupUrls[i]
       linksHtml+= 
-          '<li name="li-link-item" class="list-group-item">' +
+          '<li name="li-link-item" class="list-group-item data-bs-toggle="tooltip" data-bs-placement="top" title="' + linkLabel + '">' +
             '<input class="form-check-input me-1" type="checkbox" value="" aria-label="...">' +
-              '<a href="' + group.urls[i] + '" class="list-group-item list-group-item-action link-primary" target="_blank">' + linkLabel + '</a>' +
+              '<a href="' + group.urls[i] + '" class="list-group-item list-group-item-action link-primary text-truncate" target="_blank">' + linkLabel + '</a>' +
             '</li>'
     }
     linksHtml +=
