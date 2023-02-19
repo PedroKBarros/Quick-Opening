@@ -42,7 +42,9 @@ function getGroupsShowHtml(){
       groupName = groups[i].name
       htmlGroups = htmlGroups + 
       '<div class="col-md-' + sizePerColumnMd + ' col-sm-' + sizePerColumnSm + ' col-xs-' + sizePerColumnXs + '">' +
-      '<button id=group-' + i + ' type="button" class="btn btn-outline-primary btn-lg mt-3" style="width: 100px; height: 100px;" onClick="redirectGroupUrl(this)">' + groupName + '</button>' +
+        '<button id=group-' + i + ' type="button" class="position-relative btn btn-outline-primary btn-lg mt-3 shadow rounded-3 border border-4 border-primary text-truncate" data-bs-toggle="tooltip" data-bs-placement="top" title="' + groupName + '" style="width: 160px; height: 200px; font-size: 15px;" onClick="redirectGroupUrl(this)">' + 
+          groupName + 
+        '</button>' +
       '</div>'
       groupPerRowCount++
       console.log(getMaxGroupsPerRow())
