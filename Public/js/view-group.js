@@ -45,8 +45,8 @@ function loadGroupPage(){
         '<div class="row d-flex align-items-left text-left">' +
           '<div class="col-12 d-flex justify-content-left text-left mb-3">' +
               '<h4 class="display-9 mx-3 mt-2"> LINKS </h4>' +
-              '<button type="button" class="btn btn-outline-primary mx-3 mt-2" onClick="openAllLinks()">Open All</button>' +
-              '<button type="button" class="btn btn-outline-primary mt-2" onClick="openSelectedLinks()">Open Selected</button>' +
+              '<button type="button" class="btn btn-outline-success mx-3 mt-2" onClick="openAllLinks()">Open All</button>' +
+              '<button type="button" class="btn btn-outline-success mt-2" onClick="openSelectedLinks()">Open Selected</button>' +
               '<button type="button" class="btn btn-outline-danger mx-3 mt-2" onClick="removeSelectedLinks()">Remove Selected</button>' +
             '</div>' +
         '</div>' + 
